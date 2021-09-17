@@ -1,0 +1,9 @@
+server:
+  port: 8089
+spring:
+  application:
+    name: warehouse
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${DISCOVERY_HOST:${HOST:localhost}}:${DISCOVERY_PORT:8761}/eureka/
