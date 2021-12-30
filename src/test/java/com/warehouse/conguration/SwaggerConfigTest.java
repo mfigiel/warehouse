@@ -1,7 +1,8 @@
 package com.warehouse.conguration;
 
 import com.warehouse.configuration.SwaggerConfig;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -10,7 +11,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-@RunWith(MockitoJUnitRunner.class)
 public class SwaggerConfigTest {
 
     SwaggerConfig swaggerConfig = new SwaggerConfig();

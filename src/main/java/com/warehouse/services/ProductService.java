@@ -7,6 +7,7 @@ import com.warehouse.api.resource.ProductApi;
 import com.warehouse.api.resource.ProductState;
 import com.warehouse.repository.ProductRepository;
 import com.warehouse.repository.entity.Product;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,14 +35,11 @@ public class ProductService {
     }
 
     public ProductApi getProduct(long id) {
-        Optional<Product> product = findById(id);
-        return productApiProductMapper.productDtoToProductApi(product.orElse(null));
+        return productApiProductMapper.productDtoToProductApi(getProductDto(id));
     }
 
     public Product getProductDto(long id) {
-        Optional<Product> product = findById(id);
-
-        return product.orElse(null);
+        return  findById(id).get();
     }
 
     private Optional<Product> findById(long id) {
@@ -65,11 +63,10 @@ public class ProductService {
         return sellProduct(product);
     }
 
-    private ProductApi sellProduct(Product product) {
+    private ProductApi sellProduct(@NotNull Product product) {
         product.setUnitsInStock(product.getUnitsInStock() - 1);
         product.setUnitsInOrder(product.getUnitsInOrder() + 1);
-
-        ifSoldOutMarkIt(product);
+        product.setSoldOut(isSoldOut(product));
 
         productRepository.save(product);
 
@@ -82,11 +79,7 @@ public class ProductService {
         return productApi;
     }
 
-    private boolean ifSoldOutMarkIt(Product product) {
-        if (product.getUnitsInStock() == 0) {
-            product.setSoldOut(true);
-            return true;
-        }
-        return false;
+    private boolean isSoldOut(Product product) {
+        return product.getUnitsInStock() == 0;
     }
 }
